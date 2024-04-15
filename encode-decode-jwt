@@ -1,0 +1,27 @@
+
+- Gerar a chave privada
+openssl genrsa -out private_key.pem 2048
+
+- Criar uma requisição de assinatura de certificado (CSR) 
+openssl req -new -key private_key.pem -out certificate.csr
+
+- Gerar o certificado público usando a CSR e a chave privada
+openssl x509 -req -days 365 -in certificate.csr -signkey private_key.pem -out certificate.crt            
+
+var publicKeyPath = "C:\\hst_cert\\certificate.crt";
+            var rsaPrivateKeyPath = "C:\\hst_cert\\private_key.pem";
+            
+            var publicKeyBytes = File.ReadAllBytes(publicKeyPath);
+            var rsaPrivateBytes = File.ReadAllBytes(rsaPrivateKeyPath);
+            var rsaPrivateChar = System.Text.Encoding.UTF8.GetString(rsaPrivateBytes).ToCharArray();
+
+            //public key
+            var certificatePublicKey = new X509Certificate2(publicKeyBytes, "", keyStorageFlags: X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
+            
+            //private key
+            var rsaPrivateKey = RSA.Create();
+            rsaPrivateKey.ImportFromPem(rsaPrivateChar);
+
+            var encodeString = JWT.Encode("teste-aqui", certificatePublicKey.GetRSAPublicKey(), JweAlgorithm.RSA_OAEP_256, JweEncryption.A256GCM);
+
+            var decodeString = JWT.Decode(encodeString, rsaPrivateKey, JweAlgorithm.RSA_OAEP_256, JweEncryption.A256GCM);

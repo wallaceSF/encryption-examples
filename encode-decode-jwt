@@ -8,8 +8,8 @@ openssl req -new -key private_key.pem -out certificate.csr
 - Gerar o certificado público usando a CSR e a chave privada
 openssl x509 -req -days 365 -in certificate.csr -signkey private_key.pem -out certificate.crt            
 
-var publicKeyPath = "C:\\hst_cert\\certificate.crt";
-            var rsaPrivateKeyPath = "C:\\hst_cert\\private_key.pem";
+var publicKeyPath = "C:\\cert\\certificate.crt";
+            var rsaPrivateKeyPath = "C:\\cert\\private_key.pem";
             
             var publicKeyBytes = File.ReadAllBytes(publicKeyPath);
             var rsaPrivateBytes = File.ReadAllBytes(rsaPrivateKeyPath);

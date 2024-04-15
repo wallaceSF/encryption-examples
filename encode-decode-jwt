@@ -6,7 +6,10 @@ openssl genrsa -out private_key.pem 2048
 openssl req -new -key private_key.pem -out certificate.csr
 
 - Gerar o certificado público usando a CSR e a chave privada
-openssl x509 -req -days 365 -in certificate.csr -signkey private_key.pem -out certificate.crt            
+openssl x509 -req -days 365 -in certificate.csr -signkey private_key.pem -out certificate.crt   
+
+--opcional caso queira usar x509
+openssl pkcs12 -in certificate.crt -inkey private_key.pem -export -out a.pfx
 
 var publicKeyPath = "C:\\cert\\certificate.crt";
             var rsaPrivateKeyPath = "C:\\cert\\private_key.pem";
